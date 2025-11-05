@@ -1,11 +1,11 @@
-# `src/` – Python model for cryogenic tank design
+# Python model for cryogenic tank design (`src/`)
 
-This folder contains a small, self-contained Python model that links
-simple analytical formulas with the engineering concept of a cryogenic
+This folder contains a small, self-contained **Python model** that links
+simple analytical formulas to the engineering concept of a cryogenic
 LOX/LH₂ tank for launch vehicles.
 
 The code is **educational** and is not intended for certified flight
-hardware. It illustrates how geometry, materials, insulation and boil-off
+hardware. It shows how geometry, materials, insulation and boil-off
 behaviour can be explored in a reproducible way.
 
 ---
@@ -14,7 +14,7 @@ behaviour can be explored in a reproducible way.
 
 ### `tank_config.py`
 
-Defines basic data structures and configuration for the tank:
+Defines the baseline configuration and core data structures:
 
 - `Material` – name, density, yield strength, safety factor.  
 - `Insulation` – name, effective heat leak \[W/m²].  
@@ -37,12 +37,13 @@ Core analytical functions for a cryogenic tank:
 - `heat_leak(config)` – total heat leak \[W] from area × heat-leak density.  
 - `boiloff_rate(config)` – boil-off rate \[kg/hour] from heat leak and latent heat.
 
-The demo entry point:
+Entry point:
 
 ```bash
 python -m src.boiloff_model
 
-prints a short summary, for example:
+
+Example output:
 
 === Cryogenic Tank Demo (LOX) ===
 Shell mass:             XXXX.X kg
@@ -52,13 +53,14 @@ Boil-off rate:           X.XXX kg/hour
 
 compare_materials.py
 
+
 Compares two material options for the same geometry and insulation:
 
 baseline Al–Li 2195 tank,
 
 conceptual CFRP + liner tank.
 
-For each configuration it computes:
+For each configuration, it computes:
 
 shell mass [kg],
 
@@ -79,18 +81,19 @@ Note: CFRP mass is lower, but real designs require liner, complex QA and
 qualification, and have higher technical risk.
 
 
-This mirrors typical trade-offs in cryogenic tank design: mass vs
-technology readiness vs risk.
+This mirrors typical trade-offs in cryogenic tank design:
+mass vs technology readiness vs risk.
+
 
 Usage notes
 
 All scripts assume SI units (metres, kilograms, Pascals, Watts).
 
-The numbers are order-of-magnitude and intended for didactic
-purposes, not for detailed sizing.
+Numerical values are order-of-magnitude and meant for study and
+coursework, not for detailed sizing.
 
-For more serious work, each assumption (heat-leak density, stress
-limits, safety factors) should be backed by test data or standards.
+For serious design work, each assumption (heat-leak density, stress
+limits, safety factors) must be backed by standards and test data.
 
 You can extend this folder with:
 
@@ -99,3 +102,5 @@ Jupyter notebooks for parameter sweeps,
 additional material options and load cases,
 
 simple plotting utilities based on matplotlib.
+
+
