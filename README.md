@@ -1,89 +1,137 @@
-# Cryogenic Fuel Tank Design — Launch Vehicle Study
+# Cryogenic Fuel Tank Design — Launch Vehicle Study  
 
-Author: S. I. Romanova  
-Year: 2025  
-
-This repository documents a conceptual structural design for a **cryogenic fuel tank** used in space launch vehicles.  
-The focus is on:
-
-- thermal insulation (MLI + vacuum jacket, minimising thermal bridges),
-- material selection (Al–Li alloys versus composite tanks),
-- safety measures against **boil-off losses** and over-pressure.
-
-The project combines an engineering report (PDF) and a small, reproducible Python model that estimates tank mass and propellant boil-off for simple load cases.
+**Author:** S. I. Romanova  
+**Year:** 2025  
 
 ---
 
-## Repository structure
+## Overview  
 
-- `report/CryoTank_Design_Romanova_SI.pdf` — main design document (geometry, loads, safety, references).
-- `figures/` — schematic figures (tank cross-section, insulation stack, support struts).
-- `src/tank_config.py` — data structures describing tank geometry, material, and insulation.
-- `src/boiloff_model.py` — simple heat-leak and boil-off estimation model.
-- `src/compare_materials.py` — comparison of Al–Li and composite designs.
-- `data/sample_loadcase.json` — example input (pressure, temperature, dwell time).
-- `requirements.txt` — Python dependencies (NumPy, matplotlib if plots are added).
+This repository documents a **conceptual structural design** for a cryogenic fuel tank used in space launch vehicles.  
+The focus is on linking **engineering requirements** (thermal, structural, safety) with a small, transparent **Python model**.
+
+Key aspects:
+
+- **Thermal insulation**  
+  - Multilayer insulation (MLI) + vacuum jacket  
+  - Minimising thermal bridges through supports and interfaces  
+
+- **Material selection**  
+  - Aluminum–lithium (Al–Li) cryogenic tank as baseline  
+  - Composite (CFRP + liner) tank as a mass-saving, higher-risk option  
+
+- **Safety & boil-off control**  
+  - Acceptable boil-off rates for LOX / LH₂  
+  - Over-pressure protection and vent logic  
+
+The code in `src/` is intentionally simple: it is not a flight design, but an **educational, reproducible** example.
 
 ---
 
-## Quick start (Python model)
+## Repository structure  
 
-Create and activate a virtual environment (optional), then install dependencies:
+(Current state; some folders are planned.)
+
+- `src/`
+  - `tank_config.py` – baseline configuration: geometry, materials, insulation parameters.  
+  - `boiloff_model.py` – simple heat-leak and boil-off estimation for LOX / LH₂ tanks.  
+  - `compare_materials.py` – mass and qualitative risk comparison of Al–Li vs composite tanks.  
+
+- `requirements.txt` – Python dependencies (minimal: `numpy`, optionally `matplotlib` if you add plots).  
+
+**Planned (not yet in the repo, but referenced in the design):**
+
+- `report/CryoTank_Design_Romanova_SI.pdf` – main engineering brief (requirements, diagrams, tables).  
+- `figures/` – schematic cross-sections, insulation stack-ups, material trade-off table.  
+- `docs/` – markdown chapters (intro, material selection, insulation & boil-off, safety & tests, references).
+
+---
+
+## Quick start — Python model  
+
+### 1. Create environment and install dependencies  
 
 ```bash
+# (optional) create a virtual environment
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+# source venv/bin/activate
+
 pip install -r requirements.txt
 
 
-1. Estimate boil-off for a baseline Al–Li tank
+2. Estimate boil-off for a baseline Al–Li tank
 python -m src.boiloff_model
 
+The script prints an approximate heat leak (W) and boil-off rate (kg/hour) for a reference LOX or LH₂ tank, using the configuration from tank_config.py.
 
-This will print an approximate heat leak [W] and boil-off rate [kg/hour] for a reference LOX or LH₂ tank
 
-2. Compare Al–Li vs composite tank mass
+3. Compare Al–Li vs composite tank mass
 python -m src.compare_materials
 
 
-The script reports:
+The script reports, for each material option:
 
-shell mass for each material,
+shell mass estimate,
 
-safety margin on hoop stress,
+hoop-stress safety margin,
 
-qualitative notes on risk / technology readiness.
+qualitative notes on technology readiness and risk (permeation, NDI/repair, cost).
+
+You can adjust parameters such as diameter, wall thickness, design pressure, and material properties directly in tank_config.py.
 
 
 Engineering context (short abstract)
 
-The tank is intended for LOX / LH₂ storage in a launch-vehicle stage with long pre-launch dwell time and multiple cryogenic cycles.
+The tank is sized for LOX / LH₂ storage in an upper or booster stage with long pre-launch dwell time and repeated cryogenic cycles.
 
-Thermal insulation: multilayer insulation (MLI) with aluminised reflective foils and low-conductivity spacers, enclosed in a vacuum jacket. Support struts and flanges are designed to minimise thermal bridges through the use of GFRP/CFRP and thermal breaks.
+Thermal insulation
 
-Material selection: a welded Al–Li alloy tank (e.g. 2195) is used as baseline due to high TRL, good cryogenic toughness, and well-understood weld behaviour. Composite tanks (CFRP with liner) are considered as a mass-saving but higher-risk option.
+Vacuum jacket with ~30–40 MLI layers and, where needed, spray-on foam insulation (SOFI).
 
-Boil-off control: gas management system routes vapour to attitude-control / pressurisation or to safe venting. Redundant relief valves and continuous temperature/pressure monitoring ensure safety.
+Support struts made of GFRP/CFRP with thermal breaks to reduce conduction.
 
-This repository is educational and does not represent a certified flight design. It is meant as a transparent, reproducible example of how structural, thermal, and safety considerations can be linked with simple analytical models.
+Material selection
+
+Baseline: welded Al–Li alloy tank (e.g. 2195) with orthogrid stiffening, high TRL and well-documented cryogenic behaviour.
+
+Alternative: CFRP + metallic liner, ~20–30 % lighter but with higher risk in terms of permeation, inspection, and qualification costs.
+
+Boil-off & pressurisation
+
+Target heat leak: 2–5 W/m² for LH₂, 5–10 W/m² for LOX.
+
+Boil-off gas routed to autogenous pressurisation, RCS, or safe venting.
+
+Redundant relief valves (2oo3 logic) and continuous monitoring of pressure, temperature and level.
+
+This study is educational and does not represent a certified flight design.
+It is meant as a clear example of how structural, thermal, and safety considerations can be turned into simple analytical tools.
+
+
+Roadmap
+
+Planned improvements:
+
+Add the full engineering PDF brief to report/.
+
+Upload schematic figures (tank geometry, insulation stack-up, material trade-off table).
+
+Extend boiloff_model.py with separate LOX/LH₂ presets and plotting utilities.
+
+Provide Jupyter notebooks for parameter sweeps and sensitivity studies.
+
 
 Citation
 
+If you reference this work in reports or coursework, you can cite it as:
+
 Romanova, S. I. (2025). Cryogenic Fuel Tank Design — Structural, Thermal, and Safety Considerations for Launch Vehicles.
-GitHub repository: <add-repo-url-here>.
+GitHub repository:
 
+License
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Specify license here (e.g. MIT, Apache-2.0) once chosen.
 
