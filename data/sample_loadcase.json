@@ -1,0 +1,7 @@
+{
+  "propellant": "LOX",
+  "working_pressure_bar": 2.5,
+  "dwell_time_hours": 6,
+  "wall_temperature_K": 85,
+  "ambient_temperature_K": 295
+}
