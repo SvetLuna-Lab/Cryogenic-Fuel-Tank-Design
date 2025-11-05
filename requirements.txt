@@ -1,2 +1,2 @@
-```text
-numpy>=1.24
+numpy>=1.23
+matplotlib>=3.7
